@@ -2,9 +2,10 @@
 # coding=utf-8
 
 from distutils.core import setup
+from citydefects import __version__ as version
 
 setup(name='city-defects',
-      version='1.0a1',
+      version=version,
       description='',
       author='Michał Ociepka',
       author_email='michal@ociepka.info',
