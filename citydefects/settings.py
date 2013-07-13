@@ -36,6 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'defect',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,3 +82,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+
+DEFAULT_LAT = '50.827978'
+DEFAULT_LNG = '15.525992'
