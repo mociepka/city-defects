@@ -1,0 +1,21 @@
+{% load trans from i18n %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{% trans "City defects" %}{% endblock %}</title>
+        <!--[if lt IE 9]>
+        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        {% if debug %}
+        <link rel="stylesheet/less" type="text/css" href="{{ STATIC_URL }}less/style.less">
+        <script type="text/javascript" src="{{ STATIC_URL }}js/libs/less.js"></script>
+        {% else %}
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css">
+        {% endif %}
+    </head>
+    <body itemscope itemtype="http://schema.org/WebPage">
+        {% block content %}
+        {% endblock content %}
+    </body>
+</html>
