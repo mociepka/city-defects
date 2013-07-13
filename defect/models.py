@@ -21,7 +21,8 @@ class Defect(models.Model):
     lat = models.FloatField(_('Latitude'), default=settings.DEFAULT_LAT)
     lng = models.FloatField(_('Longitude'), default=settings.DEFAULT_LNG)
     publicated = models.BooleanField()
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, null=True, blank=True,
+                             related_name='reported_defects')
     tags = models.ManyToManyField(Tag)
 
 
@@ -29,4 +30,4 @@ class Image(models.Model):
 
     defect = models.ForeignKey(Defect, related_name='images')
     image = models.ImageField(upload_to='defects')
-    title = models.CharField(max_length=80)
+    title = models.CharField(max_length=80, default='', blank=True)
