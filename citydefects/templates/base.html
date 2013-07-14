@@ -13,6 +13,10 @@
         {% else %}
         <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css">
         {% endif %}
+        <script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery.js"></script>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+        {% block extrahead %}
+        {% endblock extrahead %}
     </head>
     <body itemscope itemtype="http://schema.org/WebPage">
         {% block content %}

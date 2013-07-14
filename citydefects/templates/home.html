@@ -1,1 +1,24 @@
 {% extends "base.html" %}
+
+{% block extrahead %}
+<script type="text/javascript">
+    $(function(){
+        var $canvas = $('#map_canvas')
+        ,    map = new google.maps.Map($canvas.get(0), {
+                center: new google.maps.LatLng($canvas.data('lat'), $canvas.data('lng')),
+                zoom: $canvas.data('zoom'),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+    });
+</script>
+<style>
+    #map_canvas {
+        width: 500px;
+        height: 500px;
+    }
+</style>
+{% endblock extrahead %}
+
+{% block content %}
+<div id="map_canvas" data-lat="{{ map.lat }}" data-lng="{{ map.lng }}" data-zoom="{{ map.zoom }}"></div>
+{% endblock content %}
