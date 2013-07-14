@@ -11,14 +11,21 @@
             });
     });
 </script>
-<style>
-    #map_canvas {
-        width: 500px;
-        height: 500px;
-    }
-</style>
 {% endblock extrahead %}
 
 {% block content %}
-<div id="map_canvas" data-lat="{{ map.lat }}" data-lng="{{ map.lng }}" data-zoom="{{ map.zoom }}"></div>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span10">
+      <div id="map_canvas" data-lat="{{ map.lat }}" data-lng="{{ map.lng }}" data-zoom="{{ map.zoom }}"></div>
+    </div>
+    <div class="span2">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" />
+        </form>
+    </div>
+  </div>
+</div>
 {% endblock content %}
