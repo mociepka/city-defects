@@ -37,3 +37,4 @@ nosetests.xml
 .*
 db.sqlite3
 media/
+citydefects/local_settings.py
