@@ -1,3 +1,4 @@
+# coding=utf-8
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -6,13 +7,14 @@ SECRET_KEY = 'dsez8g^+7v-vyg&j!1j=0buon^n@*!4quieq8m0ui@p)cqb5bh'
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
+INTERNAL_IPS = ['127.0.0.1']
 
 ROOT_URLCONF = 'citydefects.urls'
 
 WSGI_APPLICATION = 'citydefects.wsgi.application'
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -22,16 +24,16 @@ INSTALLED_APPS = (
 
     'citydefects',
     'defect',
-)
+]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+]
 
 DATABASES = {
     'default': {
@@ -54,3 +56,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_LAT = '50.827978'
 DEFAULT_LNG = '15.525992'
+
+GOOGLE_GEOCODE_URL = (u'http://maps.googleapis.com/maps/api/geocode/json?'
+                      u'sensor=false&address=%(address)s&'
+                      u'components=locality:Szklarska Poręba|country:Poland')
