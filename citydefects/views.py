@@ -1,4 +1,3 @@
-from defect.forms import DefectForm
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -7,24 +6,36 @@ from django.utils import simplejson
 from django.views.decorators.cache import cache_page
 import requests
 
+from defect.forms import DefectForm
+from defect.models import Defect
+
 DAY = 86400
 
 
 def home(request):
     form = DefectForm(request.POST or None)
+    defects = Defect.objects.filter(publicated=True)
     if form.is_valid():
         form.save()
         return redirect('home')
     return TemplateResponse(request, 'home.html', {
-        'map': {'lat': settings.DEFAULT_LAT, 'lng': settings.DEFAULT_LNG,
+        'map': {'lat': settings.DEFAULT_LAT,
+                'lng': settings.DEFAULT_LNG,
                 'zoom': 15},
-        'form': form
+        'form': form,
+        'defects': defects
     })
 
 
 def get_street(result):
-    return {'label': result['address_components'][0]['long_name'],
-            'value': result['geometry']['location']}
+    labels = [component['long_name'] for component in
+             result['address_components'] if
+             component['types'][0] in ['street_number', 'route']]
+    labels.reverse()
+    return {'label': ' '.join(labels),
+            'lat': result['geometry']['location']['lat'],
+            'lng': result['geometry']['location']['lng'],
+            'bounds': result['geometry']['bounds']}
 
 
 # https://developers.google.com/maps/terms

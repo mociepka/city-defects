@@ -1,31 +1,69 @@
 {% extends "base.html" %}
 
+{% load as_vertical_form from bootstrap %}
+{% load json from queryset_to_json %}
+
 {% block extrahead %}
 <script type="text/javascript">
-    $(function(){
-        var $canvas = $('#map_canvas')
-        ,    map = new google.maps.Map($canvas.get(0), {
-                center: new google.maps.LatLng($canvas.data('lat'), $canvas.data('lng')),
-                zoom: $canvas.data('zoom'),
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            });
+    $(function() {
+        var $canvas = $('#map_canvas');
+        var map = new google.maps.Map($canvas.get(0), {
+            center : new google.maps.LatLng($canvas.data('lat'), $canvas.data('lng')),
+            zoom : $canvas.data('zoom'),
+            mapTypeId : google.maps.MapTypeId.ROADMAP
+        });
+        var request, timer;
+        $("#id_street").autocomplete({
+
+            //define callback to format results
+            source : function(req, add) {
+                var streets = [];
+                $.ajax({
+                    url : '/api/streets/',
+                    type : 'get',
+                    dataType : 'json',
+                    data : {
+                        address : req.term
+                    },
+                    success : function(data) {
+                        data.value = data.label;
+                        add(data);
+                    }
+                });
+            },
+            select : function( event, ui ) {
+                $('#id_lat').val(ui.item.lat).change();
+                $('#id_lng').val(ui.item.lng).change();
+                var sw = new google.maps.LatLng(ui.item.bounds.southwest.lat, ui.item.bounds.southwest.lng);
+                var ne = new google.maps.LatLng(ui.item.bounds.northeast.lat, ui.item.bounds.northeast.lng);
+                var bounds = new google.maps.LatLngBounds(sw, ne);
+                map.fitBounds(bounds);
+            }
+        });
     });
 </script>
 {% endblock extrahead %}
 
 {% block content %}
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span10">
-      <div id="map_canvas" data-lat="{{ map.lat }}" data-lng="{{ map.lng }}" data-zoom="{{ map.zoom }}"></div>
+<div class="container" id="container">
+    <div class="row">
+        <div class="col-md-10">
+            Left
+        </div>
+        <div class="col-md-2">
+            Right
+        </div>
     </div>
-    <div class="span2">
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" />
-        </form>
-    </div>
-  </div>
 </div>
+<header class="header">
+    <h1>City defects <span class="glyphicon glyphicon-wrench"></span></h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form|as_vertical_form }}
+        <button type="submit" class="btn btn-default">
+            Submit
+        </button>
+    </form>
+</header>
+<div id="map_canvas" data-lat="{{ map.lat }}" data-lng="{{ map.lng }}" data-zoom="{{ map.zoom }}"></div>
 {% endblock content %}
