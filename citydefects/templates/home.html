@@ -4,13 +4,14 @@
 {% load json from queryset_to_json %}
 
 {% block extrahead %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/defects.js"></script>
 <script type="text/javascript">
+    App.defects = new App.Defects();
+    App.defects.set({{ defects|json }});
     $(function() {
-        var $canvas = $('#map_canvas');
-        var map = new google.maps.Map($canvas.get(0), {
-            center : new google.maps.LatLng($canvas.data('lat'), $canvas.data('lng')),
-            zoom : $canvas.data('zoom'),
-            mapTypeId : google.maps.MapTypeId.ROADMAP
+        App.mapView = new App.MapView({
+            el: $('#map_canvas')[0],
+            collection: App.defects
         });
         var request, timer;
         $("#id_street").autocomplete({
@@ -37,7 +38,7 @@
                 var sw = new google.maps.LatLng(ui.item.bounds.southwest.lat, ui.item.bounds.southwest.lng);
                 var ne = new google.maps.LatLng(ui.item.bounds.northeast.lat, ui.item.bounds.northeast.lng);
                 var bounds = new google.maps.LatLngBounds(sw, ne);
-                map.fitBounds(bounds);
+                App.mapView.map.fitBounds(bounds);
             }
         });
     });
