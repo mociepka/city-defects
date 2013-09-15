@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'easy_thumbnails',
 
     'citydefects',
     'defect',
@@ -61,3 +62,10 @@ DEFAULT_LNG = '15.525992'
 GOOGLE_GEOCODE_URL = (u'http://maps.googleapis.com/maps/api/geocode/json?'
                       u'sensor=false&address=%(address)s&'
                       u'components=locality:Szklarska Poręba|country:Poland')
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'small': {'size': (250, 250)},
+        'big': {'size': (1024, )},
+    },
+}

@@ -1,9 +1,12 @@
+import re
+
 from django.conf import settings
 from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from unidecode import unidecode
-import re
+from easy_thumbnails.fields import ThumbnailerImageField
+
 
 User = settings.AUTH_USER_MODEL
 
@@ -47,5 +50,5 @@ class Defect(models.Model):
 class Image(models.Model):
 
     defect = models.ForeignKey(Defect, related_name='images')
-    image = models.ImageField(upload_to='defects')
+    image = ThumbnailerImageField(upload_to='defects')
     title = models.CharField(max_length=80, default='', blank=True)
