@@ -7,12 +7,17 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/defects.js"></script>
 <script type="text/javascript">
     App.defects = new App.Defects();
-    App.defects.set({{ defects|json }});
     $(function() {
         App.mapView = new App.MapView({
-            el: $('#map_canvas')[0],
+            el: $('#map_canvas'),
+            defectEl: $('.defect'),
             collection: App.defects
         });
+        App.headerView = new App.HeaderView({
+            el: $('.header'),
+            collection: App.defects
+        });
+        App.defects.set({{ defects|json }});
         var request, timer;
         $("#id_street").autocomplete({
 
@@ -48,11 +53,8 @@
 {% block content %}
 <div class="container" id="container">
     <div class="row">
-        <div class="col-md-10">
-            Left
-        </div>
-        <div class="col-md-2">
-            Right
+        <div class="defect">
+            Defect!!
         </div>
     </div>
 </div>
@@ -67,4 +69,9 @@
     </form>
 </header>
 <div id="map_canvas" data-lat="{{ map.lat }}" data-lng="{{ map.lng }}" data-zoom="{{ map.zoom }}"></div>
+<script type="text/html" id="defect-tmpl">
+    <button type="button" class="close pull-right">&times;</button>
+    <h2><%= defect.get('title') %></h2>
+    <p><%= defect.get('description') %></p>
+</script>
 {% endblock content %}
