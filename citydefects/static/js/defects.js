@@ -66,9 +66,13 @@ App.MapView = Backbone.View.extend({
 App.HeaderView = Backbone.View.extend({
     initialize : function(opts) {
         var that = this;
-        this.listenTo(this.collection, 'sync', this.render);
+        this.listenTo(this.collection, 'sync', this.sync);
         this.listenTo(this.collection, 'error', this.error);
         this.listenTo(this.collection, 'all', this.test);
+        this.dropzone = new Dropzone('#images', {
+            url: '/',
+            autoProcessQueue: false
+        });
     },
     events : {
         'submit form': function(e) {
@@ -85,6 +89,11 @@ App.HeaderView = Backbone.View.extend({
     },
     test: function() {
         console.log(arguments);
+    },
+    sync: function(model, resp, options) {
+        this.dropzone.options.url = '/api/defect/' + model.id + '/addimage/';
+        this.dropzone.processQueue();
+        this.render();
     },
     error: function(model, xhr, option) {
         if (xhr.status == 400) {
