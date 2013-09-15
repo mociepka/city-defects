@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.utils import simplejson
 from django.views.decorators.cache import cache_page
+from django.forms.models import model_to_dict
 import requests
 
 from defect.forms import DefectForm
@@ -14,7 +15,12 @@ DAY = 86400
 
 def home(request):
     form = DefectForm(request.POST or None)
-    defects = Defect.objects.filter(publicated=True)
+    defects_qs = Defect.objects.select_related('images').filter(publicated=False)
+    defects = []
+    for defect_obj in defects_qs:
+        defect = model_to_dict(defect_obj)
+        defect['images'] = [image.image.url for image in defect_obj.images.all()]
+        defects.append(defect)
     if form.is_valid():
         form.save()
         return redirect('home')
