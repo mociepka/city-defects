@@ -5,6 +5,7 @@ from django.template.response import TemplateResponse
 from django.utils import simplejson
 from django.views.decorators.cache import cache_page
 from django.forms.models import model_to_dict
+from easy_thumbnails.files import get_thumbnailer
 import requests
 
 from defect.forms import DefectForm
@@ -19,7 +20,8 @@ def home(request):
     defects = []
     for defect_obj in defects_qs:
         defect = model_to_dict(defect_obj)
-        defect['images'] = [image.image.url for image in defect_obj.images.all()]
+        defect['images'] = [get_thumbnailer(image.image)['small'].url
+                            for image in defect_obj.images.all()]
         defects.append(defect)
     if form.is_valid():
         form.save()
