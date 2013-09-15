@@ -71,7 +71,12 @@ App.HeaderView = Backbone.View.extend({
         this.listenTo(this.collection, 'all', this.test);
         this.dropzone = new Dropzone('#images', {
             url: '/',
-            autoProcessQueue: false
+            autoProcessQueue: false,
+            paramName: 'image',
+            sending: function(file, xhr) {
+                xhr.setRequestHeader('X-CSRFToken', App.csrftoken);
+                debugger;
+            }
         });
     },
     events : {
@@ -91,7 +96,7 @@ App.HeaderView = Backbone.View.extend({
         console.log(arguments);
     },
     sync: function(model, resp, options) {
-        this.dropzone.options.url = '/api/defect/' + model.id + '/addimage/';
+        this.dropzone.options.url = '/api/defects/' + model.id + '/addimage/';
         this.dropzone.processQueue();
         this.render();
     },
@@ -151,10 +156,11 @@ App.HeaderView = Backbone.View.extend({
             (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
             !(/^(\/\/|http:|https:).*/.test(url));
     }
+    App.csrftoken = getCookie('csrftoken');
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-                xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+                xhr.setRequestHeader('X-CSRFToken', App.csrftoken);
             }
         }
     });
