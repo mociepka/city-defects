@@ -10,4 +10,5 @@ urlpatterns = patterns('',
 urlpatterns += patterns('citydefects.views',
     url(r'^$', 'home', name='home'),
     url(r'^api/streets/$', 'street_cache', name='streets'),
+    url(r'^api/', include('defect.urls')),
 )
