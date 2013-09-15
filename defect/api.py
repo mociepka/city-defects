@@ -9,5 +9,9 @@ class DefectsViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin,
 
     model = Defect
 
+    def pre_save(self, obj):
+        obj.user = self.request.user
+        super(DefectsViewSet, self).pre_save(obj)
+
 router = routers.DefaultRouter()
 router.register(r'defects', DefectsViewSet)
