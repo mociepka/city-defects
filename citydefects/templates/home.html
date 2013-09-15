@@ -76,5 +76,10 @@
     <button type="button" class="close pull-right">&times;</button>
     <h2><%= defect.get('title') %></h2>
     <p><%= defect.get('description') %></p>
+    <ul class="list-inline">
+        <% _.each(defect.get('images'), function (image) { %>
+            <li><img src="<%= image %>" class="img-thumbnail" /></li>
+        <% }); %>
+    </ul>
 </script>
 {% endblock content %}

@@ -2,6 +2,11 @@ var App = App || {};
 
 App.Defect = Backbone.Model.extend({
     url: '/api/defects/',
+    defaults: function() {
+        return {
+            images: []
+        }
+    },
     initialize: function(opts) {
         this.point = new google.maps.LatLng(opts.lat, opts.lng);
         this.marker = new google.maps.Marker({
@@ -75,13 +80,19 @@ App.HeaderView = Backbone.View.extend({
             paramName: 'image',
             sending: function(file, xhr) {
                 xhr.setRequestHeader('X-CSRFToken', App.csrftoken);
-                debugger;
             }
         });
+        this.listenTo(this.dropzone, 'success', function(file, src, e) {
+            that.addImage(src);
+        });
+    },
+    addImage: function(src) {
+        var images = this.model.get('images');
+        images.push(src);
     },
     events : {
         'submit form': function(e) {
-            this.collection.create({
+            this.model = this.collection.create({
                 title: this.$('#id_title').val(),
                 description: this.$('#id_description').val(),
                 street: this.$('#id_street').val(),

@@ -16,5 +16,5 @@ def addimage(request, defect_id):
     form = DefectImageForm(files=request.FILES or None, instance=image)
     if form.is_valid():
         form.save()
-        return HttpResponse('')
+        return HttpResponse(image.image.url)
     return HttpResponseBadRequest('Bad image')
