@@ -38,8 +38,14 @@ App.DefectView = Backbone.View.extend({
         this.$el.html(this.template({
             defect: this.model
         }));
+        this.$el.show();
         return this;
     },
+    events: {
+        'click .close': function(e) {
+            this.$el.hide();
+        }
+    }
 });
 
 App.MapView = Backbone.View.extend({
