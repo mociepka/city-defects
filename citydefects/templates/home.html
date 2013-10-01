@@ -7,8 +7,13 @@
 {% get_current_language as LANGUAGE_CODE %}
 
 {% block extrahead %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery.fancybox.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/jquery.fancybox.css" media="screen" />
+
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/dropzone.css">
 <script type="text/javascript" src="{{ STATIC_URL }}js/libs/dropzone.js"></script>
+
 <script type="text/javascript" src="{{ STATIC_URL }}js/defects.js"></script>
 <script type="text/javascript">
     App.defects = new App.Defects();
@@ -91,7 +96,11 @@
     <p><%= defect.get('description') %></p>
     <ul class="list-inline">
         <% _.each(defect.get('images'), function (image) { %>
-            <li><img src="<%= image %>" class="img-thumbnail" /></li>
+            <li>
+                <a rel="gallery<%= defect.id %>" href="<%= image.big %>">
+                    <img src="<%= image.small %>" class="img-thumbnail" />
+                </a>
+            </li>
         <% }); %>
     </ul>
     <div class="fb-comments" data-href="http://{{ request.get_host }}/<%= defect.id %>"></div>
