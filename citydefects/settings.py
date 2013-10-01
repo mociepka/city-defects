@@ -66,6 +66,6 @@ GOOGLE_GEOCODE_URL = (u'http://maps.googleapis.com/maps/api/geocode/json?'
 THUMBNAIL_ALIASES = {
     '': {
         'small': {'size': (250, 250)},
-        'big': {'size': (1024, )},
+        'big': {'size': (1024, 768)},
     },
 }
