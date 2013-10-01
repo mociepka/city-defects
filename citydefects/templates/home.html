@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
+{% load i18n %}
 {% load as_vertical_form from bootstrap %}
 {% load json from queryset_to_json %}
+
+{% get_current_language as LANGUAGE_CODE %}
 
 {% block extrahead %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/dropzone.css">
@@ -53,6 +56,16 @@
 {% endblock extrahead %}
 
 {% block content %}
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/{{ LANGUAGE_CODE }}/all.js#xfbml=1&appId={{ FB_API_ID }}";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 <div class="container" id="container">
     <div class="row">
         <div class="defect">
@@ -81,5 +94,6 @@
             <li><img src="<%= image %>" class="img-thumbnail" /></li>
         <% }); %>
     </ul>
+    <div class="fb-comments" data-href="http://{{ request.get_host }}/<%= defect.id %>"></div>
 </script>
 {% endblock content %}
