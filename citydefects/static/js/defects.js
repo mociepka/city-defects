@@ -38,6 +38,7 @@ App.DefectView = Backbone.View.extend({
         this.$el.html(this.template({
             defect: this.model
         }));
+        this.$('.list-inline li a').fancybox();
         this.$el.show();
         return this;
     },
