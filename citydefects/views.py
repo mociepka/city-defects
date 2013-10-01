@@ -14,13 +14,20 @@ from defect.models import Defect
 DAY = 86400
 
 
+def get_image_obj(image):
+    return {
+        'small': get_thumbnailer(image.image)['small'].url,
+        'big': get_thumbnailer(image.image)['big'].url
+    }
+
+
 def home(request):
     form = DefectForm(request.POST or None)
     defects_qs = Defect.objects.select_related('images').filter(publicated=False)
     defects = []
     for defect_obj in defects_qs:
         defect = model_to_dict(defect_obj)
-        defect['images'] = [get_thumbnailer(image.image)['small'].url
+        defect['images'] = [get_image_obj(image)
                             for image in defect_obj.images.all()]
         defects.append(defect)
     if form.is_valid():
