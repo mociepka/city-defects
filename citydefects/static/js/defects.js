@@ -38,6 +38,7 @@ App.DefectView = Backbone.View.extend({
         this.$el.html(this.template({
             defect: this.model
         }));
+        FB.XFBML.parse(this.el);
         this.$el.show();
         return this;
     },
