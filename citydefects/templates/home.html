@@ -50,8 +50,9 @@
             select : function( event, ui ) {
                 $('#id_lat').val(ui.item.lat).change();
                 $('#id_lng').val(ui.item.lng).change();
-                var sw = new google.maps.LatLng(ui.item.bounds.southwest.lat, ui.item.bounds.southwest.lng);
-                var ne = new google.maps.LatLng(ui.item.bounds.northeast.lat, ui.item.bounds.northeast.lng);
+                var viewport = ui.item.viewport;
+                var sw = new google.maps.LatLng(viewport.southwest.lat, viewport.southwest.lng);
+                var ne = new google.maps.LatLng(viewport.northeast.lat, viewport.northeast.lng);
                 var bounds = new google.maps.LatLngBounds(sw, ne);
                 App.mapView.map.fitBounds(bounds);
             }
@@ -79,7 +80,8 @@
     </div>
 </div>
 <header class="header">
-    <h1>City defects <span class="glyphicon glyphicon-wrench"></span></h1>
+    <!--h1>City defects <span class="glyphicon glyphicon-wrench"></span></h1-->
+    <img src="{{ STATIC_URL }}/logo.svg"  style="width:250px"/>
     <form action="" method="post">
         {% csrf_token %}
         {{ form|as_vertical_form }}

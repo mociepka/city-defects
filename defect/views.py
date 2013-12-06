@@ -6,7 +6,7 @@ from defect.forms import DefectImageForm
 from defect.models import Defect, Image
 
 
-#@require_POST
+@require_POST
 def addimage(request, defect_id):
     try:
         defect = Defect.objects.get(id=defect_id)
@@ -16,5 +16,5 @@ def addimage(request, defect_id):
     form = DefectImageForm(files=request.FILES or None, instance=image)
     if form.is_valid():
         form.save()
-        return HttpResponse(image.image.url)
+        return HttpResponse(image.to_JSON())
     return HttpResponseBadRequest('Bad image')

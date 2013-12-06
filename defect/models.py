@@ -6,6 +6,8 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from unidecode import unidecode
 from easy_thumbnails.fields import ThumbnailerImageField
+from django.utils import simplejson
+from easy_thumbnails.files import get_thumbnailer
 
 
 User = settings.AUTH_USER_MODEL
@@ -52,3 +54,10 @@ class Image(models.Model):
     defect = models.ForeignKey(Defect, related_name='images')
     image = ThumbnailerImageField(upload_to='defects')
     title = models.CharField(max_length=80, default='', blank=True)
+
+    def to_JSON(self):
+        image = {
+            'small': get_thumbnailer(self.image)['small'].url,
+            'big': get_thumbnailer(self.image)['big'].url
+        }
+        return simplejson.dumps(image)

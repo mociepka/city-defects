@@ -47,10 +47,11 @@ def get_street(result):
              result['address_components'] if
              component['types'][0] in ['street_number', 'route']]
     labels.reverse()
+    geometry = result['geometry']
     return {'label': ' '.join(labels),
-            'lat': result['geometry']['location']['lat'],
-            'lng': result['geometry']['location']['lng'],
-            'bounds': result['geometry']['bounds']}
+            'lat': geometry['location']['lat'],
+            'lng': geometry['location']['lng'],
+            'viewport': geometry['viewport']}
 
 
 # https://developers.google.com/maps/terms
